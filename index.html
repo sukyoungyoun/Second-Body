@@ -127,7 +127,6 @@ let height = canvas.height = window.innerHeight;
 
 const particles = [];
 const PARTICLE_COUNT = 600;
-
 for (let i = 0; i < PARTICLE_COUNT; i++) {
   particles.push({
     x: Math.random() * width,
@@ -181,7 +180,7 @@ window.addEventListener('resize', () => {
   height = canvas.height = window.innerHeight;
 });
 
-// Scan pad and gallery
+// Scan pad and gallery (cards generated only on click)
 const scanPad = document.getElementById("scan-pad");
 const intro = document.getElementById("intro");
 const gallery = document.getElementById("gallery");
@@ -191,45 +190,44 @@ function generateIP() {
   return `${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}`;
 }
 
-// GitHub raw URLs for images
-const baseURL = "https://raw.githubusercontent.com/sukyoungyoun/Second-Body/main/";
+scanPad.addEventListener("click", () => {
+  intro.style.display = "none";
+  // generate gallery cards dynamically
+  for (let i = 1; i <= 20; i++) {
+    const card = document.createElement("div");
+    card.className = "card";
+    const inner = document.createElement("div");
+    inner.className = "card-inner";
 
-for(let i=1;i<=20;i++){
-  const card=document.createElement("div");
-  card.className="card";
-  const inner=document.createElement("div");
-  inner.className="card-inner";
-  const front=document.createElement("div");
-  front.className="card-front";
-  const img=document.createElement("img");
-  img.src=`${baseURL}f${i}.png`;
-  front.appendChild(img);
-  const back=document.createElement("div");
-  back.className="card-back";
-  back.textContent=generateIP();
-  inner.appendChild(front);
-  inner.appendChild(back);
-  card.appendChild(inner);
-  card.addEventListener("click",()=>{ card.classList.toggle("flip"); });
-  gallery.appendChild(card);
-}
+    const front = document.createElement("div");
+    front.className = "card-front";
+    const img = document.createElement("img");
+    img.src = `f${i}.png`; // relative path in repo
+    front.appendChild(img);
 
-scanPad.addEventListener("click",()=>{
-  intro.style.display="none";
-  gallery.style.display="grid";
+    const back = document.createElement("div");
+    back.className = "card-back";
+    back.textContent = generateIP();
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    card.appendChild(inner);
+
+    card.addEventListener("click", () => { card.classList.toggle("flip"); });
+    gallery.appendChild(card);
+  }
+  gallery.style.display = "grid";
 });
 
-// Info modal
+// Info modal functionality
 const infoBtn = document.getElementById('info-btn');
 const infoModal = document.getElementById('info-modal');
 const infoClose = document.getElementById('info-modal-close');
 
-infoBtn.addEventListener('click', ()=>{ infoModal.style.display='flex'; });
-infoClose.addEventListener('click', ()=>{ infoModal.style.display='none'; });
-
-document.addEventListener('keydown', (e)=>{
-  if(e.key==='Escape'){ infoModal.style.display='none'; }
-});
+infoBtn.addEventListener('click', () => { infoModal.style.display = 'flex'; });
+infoClose.addEventListener('click', () => { infoModal.style.display = 'none'; });
+document.addEventListener('keydown', (e) => { if(e.key==='Escape'){ infoModal.style.display='none'; } });
 </script>
 </body>
 </html>
+
