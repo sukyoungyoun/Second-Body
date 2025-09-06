@@ -6,7 +6,6 @@
 <title>Our Imprint – Second Body</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="icon" type="image/png" href="favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
 <style>
 body {
@@ -85,7 +84,6 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 #info-modal-close:hover { background: rgba(255,255,255,0.1); color: #ff5555; }
-
 </style>
 </head>
 <body>
@@ -108,6 +106,7 @@ body {
 </div>
 
 <script>
+// Background interactive fingerprint grain
 const canvas = document.getElementById('background');
 const ctx = canvas.getContext('2d');
 let width = canvas.width = window.innerWidth;
@@ -124,7 +123,6 @@ for (let i = 0; i < PARTICLE_COUNT; i++) {
     angle: Math.random() * Math.PI * 2,
     speed: Math.random() * 0.2 + 0.05,
     opacity: Math.random() * 0.5 + 0.1,
-    flicker: Math.random() * 0.05
   });
 }
 
@@ -132,18 +130,16 @@ let mouse = { x: width/2, y: height/2 };
 window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
 function drawParticles() {
-  ctx.fillStyle = 'rgba(0,0,0,0.1)'; // subtle trail for noise feeling
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
   ctx.fillRect(0, 0, width, height);
 
   particles.forEach(p => {
-    // Random jitter for noise
     p.x += Math.cos(p.angle + Math.random()*0.5) * p.speed;
     p.y += Math.sin(p.angle + Math.random()*0.5) * p.speed;
-    p.opacity += (Math.random()-0.5)*0.02; // flicker
+    p.opacity += (Math.random()-0.5)*0.02;
     if (p.opacity > 0.6) p.opacity = 0.6;
     if (p.opacity < 0.1) p.opacity = 0.1;
 
-    // Mouse interaction
     const dx = p.x - mouse.x;
     const dy = p.y - mouse.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
@@ -152,7 +148,6 @@ function drawParticles() {
       p.y += dy/dist * 0.7;
     }
 
-    // Wrap edges
     if (p.x < 0) p.x = width;
     if (p.x > width) p.x = 0;
     if (p.y < 0) p.y = height;
@@ -168,7 +163,6 @@ function drawParticles() {
 }
 
 drawParticles();
-
 window.addEventListener('resize', () => {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
@@ -181,6 +175,7 @@ const gallery = document.getElementById("gallery");
 setTimeout(()=>{ scanPad.classList.add('visible'); },3500);
 
 function generateIP() { return `${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}`; }
+
 for(let i=1;i<=20;i++){
   const card=document.createElement("div");
   card.className="card";
@@ -189,7 +184,7 @@ for(let i=1;i<=20;i++){
   const front=document.createElement("div");
   front.className="card-front";
   const img=document.createElement("img");
-  img.src=`Fingerprints/f${i}.png`;
+  img.src=`f${i}.png`; // <-- direct root path
   front.appendChild(img);
   const back=document.createElement("div");
   back.className="card-back";
@@ -200,6 +195,7 @@ for(let i=1;i<=20;i++){
   card.addEventListener("click",()=>{ card.classList.toggle("flip"); });
   gallery.appendChild(card);
 }
+
 scanPad.addEventListener("click",()=>{ intro.style.display="none"; gallery.style.display="grid"; });
 
 // Info modal
