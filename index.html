@@ -63,13 +63,21 @@ body {
 
 /* Info modal */
 #info-modal { 
-  position: fixed; top: 0; left: 0;
+  position: fixed;
+  top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.95); color: #fff;
+  background: rgba(0,0,0,0.95); 
+  color: #fff;
   display: none; justify-content: center; align-items: center;
   padding: 2rem; text-align: center; z-index: 20; overflow-y: auto;
 }
-#info-modal p { max-width: 600px; line-height: 1.6; }
+
+#info-modal p { 
+  max-width: 90%; 
+  width: clamp(300px, 80%, 600px);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.6; 
+}
 
 /* Modal close button same shape as info button */
 #info-modal-close {
@@ -84,6 +92,11 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 #info-modal-close:hover { background: rgba(255,255,255,0.1); color: #ff5555; }
+
+@media(max-width: 480px){
+  #info-modal p { font-size: 1rem; }
+  #info-modal-close { width: 40px; height: 40px; font-size: 1.2rem; }
+}
 </style>
 </head>
 <body>
@@ -174,7 +187,12 @@ const intro = document.getElementById("intro");
 const gallery = document.getElementById("gallery");
 setTimeout(()=>{ scanPad.classList.add('visible'); },3500);
 
-function generateIP() { return `${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}`; }
+function generateIP() { 
+  return `${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}`;
+}
+
+// Replace YOUR_USERNAME and YOUR_REPO with your actual GitHub info
+const baseURL = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/";
 
 for(let i=1;i<=20;i++){
   const card=document.createElement("div");
@@ -184,7 +202,7 @@ for(let i=1;i<=20;i++){
   const front=document.createElement("div");
   front.className="card-front";
   const img=document.createElement("img");
-  img.src=`f${i}.png`; // <-- direct root path
+  img.src=`${baseURL}f${i}.png`;
   front.appendChild(img);
   const back=document.createElement("div");
   back.className="card-back";
@@ -196,7 +214,10 @@ for(let i=1;i<=20;i++){
   gallery.appendChild(card);
 }
 
-scanPad.addEventListener("click",()=>{ intro.style.display="none"; gallery.style.display="grid"; });
+scanPad.addEventListener("click",()=>{
+  intro.style.display="none";
+  gallery.style.display="grid";
+});
 
 // Info modal
 const infoBtn = document.getElementById('info-btn');
