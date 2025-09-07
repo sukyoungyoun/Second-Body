@@ -76,6 +76,7 @@ body {
   z-index: 20; 
   overflow-y: auto; /* allows scrolling on small screens */
   flex-direction: column; /* stack content */
+  box-sizing: border-box;
 }
 
 #info-modal p { 
@@ -83,12 +84,13 @@ body {
   width: clamp(300px, 90%, 600px);
   font-size: clamp(1rem, 2vw, 1.2rem);
   line-height: 1.6; 
-  margin: 0 auto; /* center text */
+  margin: 1rem auto; /* center text and add spacing */
   word-wrap: break-word; /* prevent overflow */
+  padding: 0 1rem; /* padding for small screens */
 }
 
 #info-modal-close {
-  position: fixed; 
+  position: absolute; 
   top: 1rem; right: 1rem;
   width: 50px; height: 50px;
   border: 2px solid #fff;
@@ -104,8 +106,9 @@ body {
 @media(max-width: 480px){
   #info-modal p { font-size: 1rem; }
   #info-modal-close { width: 40px; height: 40px; font-size: 1.2rem; }
-  padding: 20px ;
+  #info-modal { padding: 1rem; }
 }
+
 
 </style>
 </head>
