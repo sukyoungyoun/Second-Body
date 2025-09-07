@@ -41,12 +41,54 @@ body {
 @media (min-width: 768px) and (max-width: 1024px) { #gallery { grid-template-columns: repeat(4, 1fr); } }
 @media (max-width: 767px) { #gallery { grid-template-columns: repeat(2, 1fr); } }
 
-.card { perspective: 1000px; }
-.card-inner { position: relative; width: 100%; padding-top: 100%; transform-style: preserve-3d; transition: transform 0.6s; }
-.card:hover .card-inner, .card.flip .card-inner { transform: rotateY(180deg); }
-.card-front, .card-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; border: 2px solid #444; border-radius: 12px; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-.card-front img { width: 100%; height: 100%; object-fit: cover; }
-.card-back { background: #111; transform: rotateY(180deg); font-size: 0.9rem; color: #0f0; text-align: center; padding: 0.5rem; }
+/* Cards */
+.card {
+  width: 150px;
+  height: 150px;
+  perspective: 1000px;
+  margin: 0.5rem;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card.flip .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 2px solid #444;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-back {
+  background: #111;
+  transform: rotateY(180deg);
+  font-size: 0.9rem;
+  color: #0f0;
+  text-align: center;
+  padding: 0.5rem;
+}
 
 /* Info button */
 #info-btn {
@@ -74,8 +116,8 @@ body {
   padding: 2rem; 
   text-align: center; 
   z-index: 20; 
-  overflow-y: auto; /* allows scrolling on small screens */
-  flex-direction: column; /* stack content */
+  overflow-y: auto; 
+  flex-direction: column; 
   box-sizing: border-box;
 }
 
@@ -84,9 +126,9 @@ body {
   width: clamp(300px, 90%, 600px);
   font-size: clamp(1rem, 2vw, 1.2rem);
   line-height: 1.6; 
-  margin: 1rem auto; /* center text and add spacing */
-  word-wrap: break-word; /* prevent overflow */
-  padding: 0 1rem; /* padding for small screens */
+  margin: 1rem auto;
+  word-wrap: break-word;
+  padding: 0 1rem;
 }
 
 #info-modal-close {
@@ -105,18 +147,13 @@ body {
 
 @media(max-width: 480px){
   #info-modal p { font-size: 1rem; }
-  #info-modal-close { width: 40px; height: 40px; font-size: 1.2rem; }
-  #info-modal { padding: 1rem; }
-}
-  @media(max-width: 480px){
   #info-btn, #info-modal-close {
-    width: 50px;   /* keep same as desktop */
+    width: 50px;
     height: 50px;
     font-size: 1.5rem;
   }
+  #info-modal { padding: 1rem; }
 }
-
-
 </style>
 </head>
 <body>
@@ -169,21 +206,21 @@ function drawParticles() {
     p.x += Math.cos(p.angle + Math.random()*0.5) * p.speed;
     p.y += Math.sin(p.angle + Math.random()*0.5) * p.speed;
     p.opacity += (Math.random()-0.5)*0.02;
-    if (p.opacity > 0.6) p.opacity = 0.6;
-    if (p.opacity < 0.1) p.opacity = 0.1;
+    if(p.opacity>0.6) p.opacity=0.6;
+    if(p.opacity<0.1) p.opacity=0.1;
 
     const dx = p.x - mouse.x;
     const dy = p.y - mouse.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist < 100){
+    if(dist<100){
       p.x += dx/dist * 0.7;
       p.y += dy/dist * 0.7;
     }
 
-    if (p.x < 0) p.x = width;
-    if (p.x > width) p.x = 0;
-    if (p.y < 0) p.y = height;
-    if (p.y > height) p.y = 0;
+    if(p.x < 0) p.x = width;
+    if(p.x > width) p.x = 0;
+    if(p.y < 0) p.y = height;
+    if(p.y > height) p.y = 0;
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
@@ -193,14 +230,14 @@ function drawParticles() {
 
   requestAnimationFrame(drawParticles);
 }
-
 drawParticles();
+
 window.addEventListener('resize', () => {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 });
 
-// Scan pad and gallery (cards generated only on click)
+// Scan pad and gallery
 const scanPad = document.getElementById("scan-pad");
 const intro = document.getElementById("intro");
 const gallery = document.getElementById("gallery");
@@ -212,7 +249,6 @@ function generateIP() {
 
 scanPad.addEventListener("click", () => {
   intro.style.display = "none";
-  // generate gallery cards dynamically
   for (let i = 1; i <= 20; i++) {
     const card = document.createElement("div");
     card.className = "card";
@@ -222,7 +258,7 @@ scanPad.addEventListener("click", () => {
     const front = document.createElement("div");
     front.className = "card-front";
     const img = document.createElement("img");
-    img.src = `f${i}.png`; // relative path in repo
+    img.src = `f${i}.png`; 
     front.appendChild(img);
 
     const back = document.createElement("div");
