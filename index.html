@@ -3,161 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Imprint – Second Body</title>
+<title>Our Imprint – Fluid Interactive</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
   background: #000;
-  color: #fff;
-  font-family: 'Source Serif 4', serif;
-  overflow-x: hidden;
-  position: relative;
+  font-family: 'Roboto Mono', monospace;
+  overflow: hidden;
 }
 
+/* Fluid background canvas */
 #background {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
 }
 
-.intro { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 1rem; }
-.intro-line { opacity: 0; font-size: 2rem; margin: 0.5rem 0; animation: fadeIn 1s forwards; }
-.line1 { animation-delay: 0.5s; }
-.line2 { animation-delay: 1.5s; font-size: 1.2rem; color: #ccc; }
-.line3 { animation-delay: 2.5s; font-size: 1.1rem; color: #aaa; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-#scan-pad { margin-top: 2rem; width: 200px; height: 200px; border: 3px dashed #555; border-radius: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: background 0.3s, opacity 0.6s; opacity: 0; }
-#scan-pad.visible { opacity: 1; }
-#scan-pad:hover { background: rgba(255,255,255,0.1); }
-
-#gallery { display: none; padding: 2rem; min-height: 100vh; display: grid; gap: 1rem; justify-content: center; align-items: center; }
-@media (min-width: 1025px) { #gallery { grid-template-columns: repeat(5, 1fr); } }
-@media (min-width: 768px) and (max-width: 1024px) { #gallery { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 767px) { #gallery { grid-template-columns: repeat(2, 1fr); } }
-
-/* Cards */
-.card {
-  width: 150px;
-  height: 150px;
-  perspective: 1000px;
-  margin: 0.5rem;
-}
-
-.card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
-}
-
-.card.flip .card-inner {
-  transform: rotateY(180deg);
-}
-
-.card-front, .card-back {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border: 2px solid #444;
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card-front img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-back {
-  background: #111;
-  transform: rotateY(180deg);
-  font-size: 0.9rem;
-  color: #0f0;
-  text-align: center;
-  padding: 0.5rem;
-}
-
-/* Info button */
-#info-btn {
-  position: fixed; top: 1rem; right: 1rem;
-  width: 50px; height: 50px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  display: flex; justify-content: center; align-items: center;
-  cursor: pointer; font-size: 1.5rem; z-index: 10;
-  color: #fff; background: transparent;
-  transition: background 0.3s;
-}
-#info-btn:hover { background: rgba(255,255,255,0.1); }
-
-/* Info modal */
-#info-modal { 
+/* Blur layers */
+#headerBlur {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.95); 
-  color: #fff;
-  display: none; 
-  justify-content: center; 
-  align-items: center;
-  padding: 2rem; 
-  text-align: center; 
-  z-index: 20; 
-  overflow-y: auto; 
-  flex-direction: column; 
-  box-sizing: border-box;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.25;
 }
+.blur-layer { position: absolute; top:0; left:0; right:0; bottom:0; pointer-events: none; }
+.blur-layer-1 { backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(1px); }
+.blur-layer-2 { backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+.blur-layer-3 { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.blur-layer-4 { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.blur-layer-5 { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 
-#info-modal p { 
-  max-width: 90%; 
-  width: clamp(300px, 90%, 600px);
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  line-height: 1.6; 
-  margin: 1rem auto;
-  word-wrap: break-word;
-  padding: 0 1rem;
+/* Intro text */
+.intro { 
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  height:100vh; text-align:center; padding:1rem;
+  position: relative; z-index: 2;
+  font-family: 'Cormorant Garamond', serif;
+  color:#fff;
 }
+.intro-line {
+  opacity: 0;
+  margin:0.5rem 0;
+  font-weight:400;
+  position: relative;
+  transition: transform 0.2s;
+}
+.line1 { font-size:3rem; animation: fadeIn 1s forwards; animation-delay:0.5s; }
+.line2 { font-size:1.5rem; color:#bbb; animation: fadeIn 1s forwards; animation-delay:1.5s; }
+.line3 { font-size:1.2rem; color:#888; animation: fadeIn 1s forwards; animation-delay:2.5s; }
+
+/* Scan pad */
+#scan-pad {
+  margin-top:2rem; width:220px; height:220px;
+  border:2px dashed #666; border-radius:50%;
+  display:flex; justify-content:center; align-items:center;
+  cursor:pointer; transition: background 0.3s, opacity 0.6s, transform 0.3s;
+  opacity:0; font-size:1rem; letter-spacing:1px; text-transform:uppercase; color:#fff;
+  z-index:2; position: relative;
+}
+#scan-pad.visible { opacity:1; }
+#scan-pad:hover { background: rgba(255,255,255,0.05); transform: scale(1.05); }
+
+/* Gallery */
+#gallery { 
+  display: none; 
+  padding: 2rem; 
+  min-height: 100vh; 
+  display: grid; 
+  gap: 1rem; 
+  justify-content: center; 
+  align-items: center; 
+  z-index:2; position: relative;
+}
+@media (min-width:1025px){ #gallery { grid-template-columns: repeat(5,1fr); } }
+@media (min-width:768px) and (max-width:1024px){ #gallery { grid-template-columns: repeat(4,1fr); } }
+@media (max-width:767px){ #gallery { grid-template-columns: repeat(2,1fr); } }
+
+/* Cards */
+.card {
+  width:160px; height:160px; perspective:1000px;
+  margin:0.5rem; opacity:0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  position: relative;
+  z-index:2;
+}
+.card.show { opacity:1; transform: translateY(0) scale(1); }
+.card-inner {
+  position: relative; width:100%; height:100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease;
+}
+.card.flip .card-inner { transform: rotateY(180deg); }
+
+.card-front, .card-back {
+  position: absolute; top:0; left:0; width:100%; height:100%;
+  backface-visibility: hidden;
+  border: 1px solid #555;
+  border-radius: 8px;
+  overflow: hidden;
+  display:flex; justify-content:center; align-items:center;
+  flex-direction:column;
+  background:#111;
+}
+.card-front img {
+  width:100%; height:100%; object-fit:cover; filter: grayscale(100%) contrast(1.2);
+}
+.card-back { 
+  transform: rotateY(180deg); 
+  font-size:0.8rem; color:#ccc; text-align:center; opacity:0;
+  transition: opacity 0.3s;
+}
+.card:hover .card-back, .card.clicked .card-back { opacity:1; }
+
+/* Buttons */
+#info-btn, #back-btn {
+  position:fixed; top:1rem; height:45px; width:45px;
+  border:1px solid #aaa; border-radius:50%;
+  display:flex; justify-content:center; align-items:center;
+  cursor:pointer; font-size:1.2rem; z-index:3;
+  color:#aaa; background:transparent;
+  transition: background 0.3s, border 0.3s;
+}
+#info-btn { right:1rem; }
+#back-btn { right:70px; }
+#info-btn:hover, #back-btn:hover { background: rgba(255,255,255,0.05); border-color:#fff; color:#fff; }
+
+/* Info modal */
+#info-modal { 
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.95); color:#fff;
+  display: none; justify-content: center; align-items: center;
+  padding: 2rem; text-align: center; z-index: 5;
+  flex-direction: column; box-sizing: border-box;
+}
+#info-modal p { 
+  max-width: 600px; font-size:1.1rem; line-height:1.6;
+  white-space: pre-wrap;
+  animation: typing 5s steps(50) 1 forwards;
+  overflow:hidden; border-right:.1em solid #888;
+}
+@keyframes typing { from { width:0; } to { width:100%; } }
 
 #info-modal-close {
-  position: absolute; 
-  top: 1rem; right: 1rem;
-  width: 50px; height: 50px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  display: flex; justify-content: center; align-items: center;
-  cursor: pointer; font-size: 1.5rem;
-  color: #fff; background: transparent;
-  z-index: 30;
-  transition: background 0.3s, color 0.3s;
+  position:absolute; top:1rem; right:1rem; width:40px; height:40px;
+  border:1px solid #aaa; border-radius:50%;
+  display:flex; justify-content:center; align-items:center;
+  cursor:pointer; font-size:1.2rem;
+  color:#aaa; background:transparent;
+  z-index:6; transition: background 0.3s, color 0.3s;
 }
-#info-modal-close:hover { background: rgba(255,255,255,0.1); color: #ff5555; }
+#info-modal-close:hover { background: rgba(255,255,255,0.05); color:#fff; }
 
-@media(max-width: 480px){
-  #info-modal p { font-size: 1rem; }
-  #info-btn, #info-modal-close {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
-  #info-modal { padding: 1rem; }
-}
+/* Animations */
+@keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 </style>
 </head>
 <body>
+
 <canvas id="background"></canvas>
+
+<div id="headerBlur">
+  <div class="blur-layer blur-layer-1"></div>
+  <div class="blur-layer blur-layer-2"></div>
+  <div class="blur-layer blur-layer-3"></div>
+  <div class="blur-layer blur-layer-4"></div>
+  <div class="blur-layer blur-layer-5"></div>
+</div>
 
 <div class="intro" id="intro">
   <div class="intro-line line1">Welcome to our Imprint.</div>
@@ -169,121 +190,108 @@ body {
 <div id="gallery"></div>
 
 <div id="info-btn">i</div>
+<div id="back-btn">&#x21A9;</div>
 
 <div id="info-modal">
   <span id="info-modal-close">&times;</span>
   <p>Twenty fingerprints linger, pressed into the web, marks of where we wandered, what we touched. Traces we left behind.</p>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/simplex-noise@2.4.0/simplex-noise.min.js"></script>
 <script>
-// Fingerprint-grain background
-const canvas = document.getElementById('background');
-const ctx = canvas.getContext('2d');
+// ===== Fluid interactive background =====
+const canvas = document.getElementById("background");
+const ctx = canvas.getContext("2d");
 let width = canvas.width = window.innerWidth;
 let height = canvas.height = window.innerHeight;
+const simplex = new SimplexNoise();
+let time = 0;
+let mouseX = width/2, mouseY = height/2;
+document.addEventListener('mousemove', e=>{ mouseX=e.clientX; mouseY=e.clientY; });
 
-const particles = [];
-const PARTICLE_COUNT = 600;
-for (let i = 0; i < PARTICLE_COUNT; i++) {
-  particles.push({
-    x: Math.random() * width,
-    y: Math.random() * height,
-    radius: Math.random() * 1.5 + 0.5,
-    angle: Math.random() * Math.PI * 2,
-    speed: Math.random() * 0.2 + 0.05,
-    opacity: Math.random() * 0.5 + 0.1,
-  });
-}
-
-let mouse = { x: width/2, y: height/2 };
-window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-
-function drawParticles() {
-  ctx.fillStyle = 'rgba(0,0,0,0.1)';
-  ctx.fillRect(0, 0, width, height);
-
-  particles.forEach(p => {
-    p.x += Math.cos(p.angle + Math.random()*0.5) * p.speed;
-    p.y += Math.sin(p.angle + Math.random()*0.5) * p.speed;
-    p.opacity += (Math.random()-0.5)*0.02;
-    if(p.opacity>0.6) p.opacity=0.6;
-    if(p.opacity<0.1) p.opacity=0.1;
-
-    const dx = p.x - mouse.x;
-    const dy = p.y - mouse.y;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist<100){
-      p.x += dx/dist * 0.7;
-      p.y += dy/dist * 0.7;
+function drawFluid() {
+  ctx.clearRect(0,0,width,height);
+  const imgData = ctx.createImageData(width,height);
+  const data = imgData.data;
+  for(let y=0;y<height;y+=4){
+    for(let x=0;x<width;x+=4){
+      const nx = x*0.002 + (mouseX-width/2)*0.0005;
+      const ny = y*0.002 + (mouseY-height/2)*0.0005;
+      const value = (simplex.noise3D(nx, ny, time)+1)*0.5;
+      const r = Math.floor(50 + value*200);
+      const g = Math.floor(50 + value*200);
+      const b = Math.floor(80 + value*175);
+      const idx = (y*width + x)*4;
+      data[idx]=r; data[idx+1]=g; data[idx+2]=b; data[idx+3]=255;
     }
-
-    if(p.x < 0) p.x = width;
-    if(p.x > width) p.x = 0;
-    if(p.y < 0) p.y = height;
-    if(p.y > height) p.y = 0;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(255,255,255,${p.opacity})`;
-    ctx.fill();
-  });
-
-  requestAnimationFrame(drawParticles);
+  }
+  ctx.putImageData(imgData,0,0);
+  time += 0.005;
+  requestAnimationFrame(drawFluid);
 }
-drawParticles();
-
-window.addEventListener('resize', () => {
+drawFluid();
+window.addEventListener('resize', ()=>{
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 });
 
-// Scan pad and gallery
-const scanPad = document.getElementById("scan-pad");
-const intro = document.getElementById("intro");
-const gallery = document.getElementById("gallery");
-setTimeout(()=>{ scanPad.classList.add('visible'); },3500);
-
-function generateIP() { 
-  return `${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}`;
-}
-
-scanPad.addEventListener("click", () => {
-  intro.style.display = "none";
-  for (let i = 1; i <= 20; i++) {
-    const card = document.createElement("div");
-    card.className = "card";
-    const inner = document.createElement("div");
-    inner.className = "card-inner";
-
-    const front = document.createElement("div");
-    front.className = "card-front";
-    const img = document.createElement("img");
-    img.src = `f${i}.png`; 
-    front.appendChild(img);
-
-    const back = document.createElement("div");
-    back.className = "card-back";
-    back.textContent = generateIP();
-
-    inner.appendChild(front);
-    inner.appendChild(back);
-    card.appendChild(inner);
-
-    card.addEventListener("click", () => { card.classList.toggle("flip"); });
-    gallery.appendChild(card);
-  }
-  gallery.style.display = "grid";
+// ===== Intro interaction =====
+const introLines = document.querySelectorAll('.intro-line');
+document.addEventListener('mousemove', e=>{
+  introLines.forEach((line,i)=>{
+    line.style.transform = `translate(${(e.clientX-width/2)*0.02}px, ${(e.clientY-height/2)*0.02}px)`;
+  });
 });
 
-// Info modal functionality
-const infoBtn = document.getElementById('info-btn');
-const infoModal = document.getElementById('info-modal');
-const infoClose = document.getElementById('info-modal-close');
+// ===== Scan pad and gallery =====
+const scanPad=document.getElementById("scan-pad");
+const intro=document.getElementById("intro");
+const gallery=document.getElementById("gallery");
+setTimeout(()=>{scanPad.classList.add('visible');},3500);
 
-infoBtn.addEventListener('click', () => { infoModal.style.display = 'flex'; });
-infoClose.addEventListener('click', () => { infoModal.style.display = 'none'; });
-document.addEventListener('keydown', (e) => { if(e.key==='Escape'){ infoModal.style.display='none'; } });
+function generateIP(){ 
+  return `${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}.${Math.floor(Math.random()*256)}`; 
+}
+
+scanPad.addEventListener("click",()=>{
+  intro.style.display="none";
+  gallery.innerHTML="";
+  gallery.style.display="grid";
+  for(let i=1;i<=20;i++){
+    const card=document.createElement("div"); card.className="card";
+    const inner=document.createElement("div"); inner.className="card-inner";
+
+    const front=document.createElement("div"); front.className="card-front";
+    const img=document.createElement("img"); img.src=`f${i}.png`;
+    front.appendChild(img);
+
+    const back=document.createElement("div"); back.className="card-back";
+    back.textContent=generateIP();
+
+    inner.appendChild(front); inner.appendChild(back);
+    card.appendChild(inner);
+
+    card.addEventListener("click",()=>{ card.classList.toggle("flip"); card.classList.toggle("clicked"); });
+
+    gallery.appendChild(card);
+    setTimeout(()=>{ card.classList.add('show'); }, i*150);
+  }
+});
+
+// ===== Info modal =====
+const infoBtn=document.getElementById('info-btn');
+const infoModal=document.getElementById('info-modal');
+const infoClose=document.getElementById('info-modal-close');
+infoBtn.addEventListener('click',()=>{ infoModal.style.display='flex'; });
+infoClose.addEventListener('click',()=>{ infoModal.style.display='none'; });
+document.addEventListener('keydown',e=>{if(e.key==='Escape')infoModal.style.display='none';});
+
+// ===== Back button =====
+const backBtn=document.getElementById('back-btn');
+backBtn.addEventListener('click',()=>{
+  gallery.style.display='none';
+  intro.style.display='flex';
+});
 </script>
 </body>
 </html>
-
