@@ -14,7 +14,7 @@ body {
   margin: 0;
   background: #000;
   font-family: 'Roboto Mono', monospace;
-  overflow: hidden;
+  overflow-y: auto; 
 }
 
 /* Fluid background canvas */
@@ -74,15 +74,17 @@ body {
 #scan-pad:hover { background: rgba(255,255,255,0.05); transform: scale(1.05); }
 
 /* Gallery */
-#gallery { 
-  display: none; 
-  padding: 2rem; 
-  min-height: 100vh; 
-  display: grid; 
-  gap: 1rem; 
-  justify-content: center; 
-  align-items: center; 
-  z-index:2; position: relative;
+#gallery {
+  display: none;
+  padding: 2rem 2rem 12rem 2rem; /* extra bottom space for scrolling */
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 220px; /* bigger cards */
+  gap: 2.5rem;
+  justify-items: center;  
+  align-items: center;    
+  z-index: 2;
+  position: relative;
 }
 @media (min-width:1025px){ #gallery { grid-template-columns: repeat(5,1fr); } }
 @media (min-width:768px) and (max-width:1024px){ #gallery { grid-template-columns: repeat(4,1fr); } }
@@ -90,12 +92,13 @@ body {
 
 /* Cards */
 .card {
-  width:160px; height:160px; perspective:1000px;
-  margin:0.5rem; opacity:0;
+  width: 100%;           /* fills its grid cell */
+  aspect-ratio: 1/1;     /* ensures square shape */
+  perspective: 1000px;
+  opacity: 0;
   transform: translateY(20px) scale(0.95);
   transition: opacity 0.8s ease, transform 0.8s ease;
-  position: relative;
-  z-index:2;
+  max-width: 220px;      /* bigger max size */
 }
 .card.show { opacity:1; transform: translateY(0) scale(1); }
 .card-inner {
@@ -295,3 +298,4 @@ backBtn.addEventListener('click',()=>{
 </script>
 </body>
 </html>
+
